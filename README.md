@@ -1,4 +1,4 @@
-# Assitant-ai-based-on-RAG-
+# Assistant RAG Local (LLaMA 3.2 + FAISS + LangChain)
 Ce projet développe un assistant de recherche intelligent basé sur l’architecture RAG. Il combine LLaMA 3.2 (via Ollama) et FAISS pour interroger des documents PDF en langage naturel. Le système identifie les passages les plus pertinents et génère des réponses précises en s’appuyant uniquement sur le contenu des documents.
 <img width="1441" height="1016" alt="Capture d&#39;écran 2026-06-25 235920" src="https://github.com/user-attachments/assets/a8a41ba4-6b66-4336-8f54-b6bc8d7ba7b0" />
 <img width="1402" height="819" alt="Capture d&#39;écran 2026-06-26 000033" src="https://github.com/user-attachments/assets/6f7a083e-31a8-4a14-8080-8a6cbd8978b8" />
@@ -6,7 +6,7 @@ Ce projet développe un assistant de recherche intelligent basé sur l’archite
 
 
 
-# Assistant RAG Local (LLaMA 3.2 + FAISS + LangChain)
+
 
 Ce projet implémente un système de **Génération Augmentée par Récupération (RAG - Retrieval-Augmented Generation)** entièrement local. Il permet de poser des questions en langage naturel sur un document PDF et d'obtenir des réponses précises générées par un modèle de langage (LLM), basées uniquement sur le contenu du document.
 
