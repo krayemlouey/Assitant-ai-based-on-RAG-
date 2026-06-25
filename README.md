@@ -5,12 +5,9 @@ Ce projet implémente un système de **Génération Augmentée par Récupératio
 
 ---
 
-## Pourquoi le fichier PDF s'affiche-t-il avec des symboles illisibles dans VS Code ?
-Un fichier PDF (`.pdf`) est un **fichier binaire** compilé qui contient des instructions complexes de mise en page, de polices et d'images. 
-- **VS Code** est un éditeur de texte brut. Lorsqu'il essaie d'ouvrir un PDF, il interprète les octets binaires comme des caractères textuels, ce qui génère des symboles incompréhensibles (`%PDF-1.7 ...`).
-- **Solution :** Pour lire le PDF, ouvrez-le avec un lecteur PDF standard (Adobe Reader, votre navigateur web comme Chrome/Edge, ou installez l'extension *vscode-pdf* dans VS Code).
 
----
+
+
 
 ##  Qu'est-ce que le RAG et à quoi sert-il ?
 Les modèles de langage (LLM) comme LLaMA ont des connaissances générales mais ne connaissent pas vos documents privés. Le **RAG (Retrieval-Augmented Generation)** résout ce problème en combinant deux étapes :
