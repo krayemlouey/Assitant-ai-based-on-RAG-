@@ -1,0 +1,17 @@
+# Environnement virtuel Python
+venv/
+.venv/
+env/
+ENV/
+
+# Caches Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Index vectoriel local (généré automatiquement)
+vectorstore/
+
+# Données locales (facultatif - à ignorer si confidentiel)
+data/

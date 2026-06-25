@@ -1,0 +1,117 @@
+# Assistant RAG Local (LLaMA 3.2 + FAISS + LangChain)
+
+Ce projet implémente un système de **Génération Augmentée par Récupération (RAG - Retrieval-Augmented Generation)** entièrement local. Il permet de poser des questions en langage naturel sur un document PDF et d'obtenir des réponses précises générées par un modèle de langage (LLM), basées uniquement sur le contenu du document.
+
+---
+
+## Pourquoi le fichier PDF s'affiche-t-il avec des symboles illisibles dans VS Code ?
+Un fichier PDF (`.pdf`) est un **fichier binaire** compilé qui contient des instructions complexes de mise en page, de polices et d'images. 
+- **VS Code** est un éditeur de texte brut. Lorsqu'il essaie d'ouvrir un PDF, il interprète les octets binaires comme des caractères textuels, ce qui génère des symboles incompréhensibles (`%PDF-1.7 ...`).
+- **Solution :** Pour lire le PDF, ouvrez-le avec un lecteur PDF standard (Adobe Reader, votre navigateur web comme Chrome/Edge, ou installez l'extension *vscode-pdf* dans VS Code).
+
+---
+
+##  Qu'est-ce que le RAG et à quoi sert-il ?
+Les modèles de langage (LLM) comme LLaMA ont des connaissances générales mais ne connaissent pas vos documents privés. Le **RAG (Retrieval-Augmented Generation)** résout ce problème en combinant deux étapes :
+1. **Retrieval (Récupération) :** Recherche dans votre document les passages les plus pertinents par rapport à votre question.
+2. **Generation (Génération) :** Donne ces passages en guise de contexte au LLM et lui demande de rédiger une réponse précise.
+
+### Avantages du RAG :
+- **Pas d'hallucinations :** Le modèle répond en se basant uniquement sur vos documents.
+- **Sécurité et Confidentialité :** Tout tourne à 100% en local sur votre machine. Aucune donnée n'est envoyée à des serveurs tiers.
+- **Pas de réentraînement :** Pas besoin d'entrainer un modèle coûteux, il suffit d'indexer le document.
+
+---
+
+## Architecture du Système
+
+Le pipeline se déroule en deux grandes phases :
+
+### 1. Phase d'Ingestion des Données (`ingest.py`)
+```mermaid
+graph TD
+    A[Document PDF] --> B[PyPDFLoader : Lecture du texte]
+    B --> C[RecursiveCharacterTextSplitter : Découpage en chunks de 500 caract.]
+    C --> D[HuggingFaceEmbeddings : Vectorisation des chunks via all-MiniLM-L6-v2]
+    D --> E[FAISS : Indexation et stockage vectoriel local]
+```
+
+### 2. Phase de Question-Réponse / RAG (`qa.py` & `app.py`)
+```mermaid
+graph TD
+    User([Question de l'utilisateur]) --> Embed[Vectorisation de la question]
+    Embed --> FAISS[Recherche de similarité dans l'index FAISS]
+    FAISS --> Context[Récupération des K chunks les plus proches]
+    Context & User --> Prompt[Construction du Prompt avec contexte]
+    Prompt --> LLM[ChatOllama: LLaMA 3.2]
+    LLM --> Response([Réponse finale rédigée])
+```
+
+---
+
+##  Détails Techniques des Composants
+- **LangChain** : Framework d'orchestration pour relier le chargement des documents, la recherche vectorielle et le LLM.
+- **PyPDFLoader** : Chargeur de document pour extraire le texte brut des pages du PDF.
+- **RecursiveCharacterTextSplitter** : Découpe le texte en segments (chunks) de 500 caractères avec un chevauchement (overlap) de 50 caractères pour éviter de couper des phrases au milieu et conserver le contexte.
+- **HuggingFaceEmbeddings (all-MiniLM-L6-v2)** : Modèle d'embeddings local qui transforme chaque segment de texte en un vecteur numérique de 384 dimensions représentant sa signification sémantique.
+- **FAISS (Facebook AI Similarity Search)** : Bibliothèque optimisée pour stocker les vecteurs et effectuer des recherches de similarité ultra-rapides.
+- **ChatOllama (LLaMA 3.2 - 3B)** : Modèle de langage local exécuté par Ollama. Il reçoit la question et les segments pertinents pour générer une réponse fluide et correcte.
+
+---
+
+##  Installation et Utilisation
+
+### Prérequis
+1. Installez [Ollama](https://ollama.com/).
+2. Téléchargez le modèle LLaMA 3.2 en local :
+   ```bash
+   ollama run llama3.2
+   ```
+
+### Installation du projet
+1. Ouvrez votre terminal à la racine du projet.
+2. Activez l'environnement virtuel :
+   ```powershell
+   (Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned) ; (& .\venv\Scripts\Activate.ps1)
+   ```
+3. Installez les dépendances :
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### Fonctionnement
+1. **Étape 1 : Ingestion du document**
+   Placez votre PDF dans le dossier `data/` et nommez-le `document.pdf`. Lancez ensuite l'indexation :
+   ```bash
+   python ingest.py
+   ```
+2. **Étape 2 : Lancer le chat interactif**
+   ```bash
+   python app.py
+   ```
+
+---
+
+## Comment évaluer la fiabilité de notre RAG ?
+
+Pour s'assurer que le RAG donne des réponses fiables et n'invente rien (hallucinations), on évalue le système selon **la Triade du RAG** :
+
+```mermaid
+graph TD
+    Q[Question] -->|Context Relevance| C[Contexte Récupéré]
+    C -->|Groundedness / Faithfulness| A[Réponse du LLM]
+    A -->|Answer Relevance| Q
+```
+
+### 1. Les 3 métriques clés de fiabilité
+*   **Fidélité (Faithfulness / Groundedness) :** Est-ce que la réponse générée provient *uniquement* du contexte récupéré ? (Permet de mesurer si le modèle hallucine).
+*   **Pertinence de la réponse (Answer Relevance) :** Est-ce que la réponse répond directement et précisément à la question posée par l'utilisateur ?
+*   **Pertinence du contexte (Context Precision / Recall) :** Est-ce que le système de recherche a bien récupéré les bons passages du PDF nécessaires pour répondre à la question ?
+
+### 2. Méthodologie pratique de test
+*   **Créer un jeu de données de test (Ground Truth) :** Préparez une liste de 10 à 20 questions réelles sur votre document avec les réponses attendues (rédigées manuellement).
+*   **Tests manuels et scénarios limites (Edge Cases) :**
+    *   *Question hors sujet :* Posez une question qui n'a aucun rapport avec le document (le RAG doit répondre "Je ne sais pas" ou "L'information n'est pas présente dans le document").
+    *   *Question contradictoire :* Testez la résistance du LLM aux biais.
+*   **Évaluation automatisée avec Ragas / TruLens :** 
+    Vous pouvez intégrer la bibliothèque Python `ragas` pour calculer automatiquement des scores de fidélité et de pertinence sur votre jeu de test.
