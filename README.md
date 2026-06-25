@@ -1,5 +1,5 @@
 # Assistant RAG Local (LLaMA 3.2 + FAISS + LangChain)
-Ce projet développe un assistant de recherche intelligent basé sur l’architecture RAG. Il combine LLaMA 3.2 (via Ollama) et FAISS pour interroger des documents PDF en langage naturel. Le système identifie les passages les plus pertinents et génère des réponses précises en s’appuyant uniquement sur le contenu des documents.
+Développement d'un assistant de recherche intelligent RAG. L'organisation par LangChain et il combine LLaMA 3.2 (via Ollama) et FAISS pour interroger des documents PDF en langage naturel. Le système identifie les passages les plus pertinents et génère des réponses précises en s’appuyant uniquement sur le contenu des documents.
 <img width="1441" height="1016" alt="Capture d&#39;écran 2026-06-25 235920" src="https://github.com/user-attachments/assets/a8a41ba4-6b66-4336-8f54-b6bc8d7ba7b0" />
 <img width="1402" height="819" alt="Capture d&#39;écran 2026-06-26 000033" src="https://github.com/user-attachments/assets/6f7a083e-31a8-4a14-8080-8a6cbd8978b8" />
 <img width="1397" height="807" alt="Capture d&#39;écran 2026-06-26 000048" src="https://github.com/user-attachments/assets/068ea21a-f122-4c4b-a949-42e33372f42c" />
