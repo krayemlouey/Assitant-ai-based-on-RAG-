@@ -1,4 +1,9 @@
-<<<<<<< HEAD
+<img width="1441" height="1016" alt="Capture d&#39;écran 2026-06-25 235920" src="https://github.com/user-attachments/assets/a8a41ba4-6b66-4336-8f54-b6bc8d7ba7b0" />
+<img width="1402" height="819" alt="Capture d&#39;écran 2026-06-26 000033" src="https://github.com/user-attachments/assets/6f7a083e-31a8-4a14-8080-8a6cbd8978b8" />
+<img width="1397" height="807" alt="Capture d&#39;écran 2026-06-26 000048" src="https://github.com/user-attachments/assets/068ea21a-f122-4c4b-a949-42e33372f42c" />
+
+
+
 # Assistant RAG Local (LLaMA 3.2 + FAISS + LangChain)
 
 Ce projet implémente un système de **Génération Augmentée par Récupération (RAG - Retrieval-Augmented Generation)** entièrement local. Il permet de poser des questions en langage naturel sur un document PDF et d'obtenir des réponses précises générées par un modèle de langage (LLM), basées uniquement sur le contenu du document.
