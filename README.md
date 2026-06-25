@@ -62,36 +62,7 @@ graph TD
 
 ---
 
-##  Installation et Utilisation
 
-### Prérequis
-1. Installez [Ollama](https://ollama.com/).
-2. Téléchargez le modèle LLaMA 3.2 en local :
-   ```bash
-   ollama run llama3.2
-   ```
-
-### Installation du projet
-1. Ouvrez votre terminal à la racine du projet.
-2. Activez l'environnement virtuel :
-   ```powershell
-   (Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned) ; (& .\venv\Scripts\Activate.ps1)
-   ```
-3. Installez les dépendances :
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-### Fonctionnement
-1. **Étape 1 : Ingestion du document**
-   Placez votre PDF dans le dossier `data/` et nommez-le `document.pdf`. Lancez ensuite l'indexation :
-   ```bash
-   python ingest.py
-   ```
-2. **Étape 2 : Lancer le chat interactif**
-   ```bash
-   python app.py
-   ```
 
 ---
 
